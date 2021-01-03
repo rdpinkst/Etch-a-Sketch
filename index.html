@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Etch-a-Sketch</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <h1>Etch-a-Sketch</h1>
+        <div class = "button">
+        <button class = "reset">Reset</button>
+        <button class = "clear">Clear</button>
+        <button class = "rainbow">Rainbow</button>
+        <button class = "default">Black</button>
+        </div><br>
+        <div class="container">
+           
+        </div>
+
+    </body>
+
+    <script>
+        
+        
+        const container = document.querySelector(".container");
+        const rainbow = document.querySelector(".rainbow");
+        
+        
+        //16x16 grid
+        function origGrid(){
+
+            gridSize(16);
+            gridCreation(16);
+            
+        }
+
+        //Lets the attached style sheet know the number of rows and columns
+        function gridSize(row){
+            container.style.setProperty('--grid-rows', row);
+            container.style.setProperty('--grid-cols', row);
+        }
+
+        //generates the grid divs
+        function gridCreation(size){
+    
+            for(var i = 0; i < size * size; i++){
+                 const cube = document.createElement("div");
+                 cube.classList.add("cube");
+                 cube.style.border = "0.50px solid black";
+                 
+                 container.appendChild(cube);
+
+             }
+             gridHoover();
+                
+
+        }
+
+        //Pixelates the grid
+        function gridHoover(){
+            const cube = document.querySelectorAll(".cube");
+            
+            cube.forEach(cube =>{
+                cube.addEventListener("mouseenter", () =>{
+                    
+                    cube.style.backgroundColor = "black";
+                
+                })
+            })           
+        }
+
+        //Clear the grid and removing the child elements
+        function clearGrid(){
+            
+            while(container.firstChild){
+                
+                container.removeChild(container.firstChild);
+            }
+        }
+
+        function eraseGrid(){
+            const clear = document.querySelector(".clear");
+            const cube = document.querySelectorAll(".cube");
+
+            clear.addEventListener("click", () => {
+                cube.forEach(cube => {
+                    cube.style.backgroundColor = "white";
+                })
+
+            })
+        }
+
+
+        //Generates a new grid based on input in the prompt
+        function newGrid(){
+            const cube = document.querySelectorAll(".cube");
+            const reset = document.querySelector(".reset");
+            
+
+            reset.addEventListener("click", () => {
+                
+                clearGrid();
+
+                var newG = prompt("Enter a new grid size.")
+
+                if(newG >= 4 && newG <=100){
+                    gridSize(newG);
+                    gridCreation(newG);
+                    rainbowGrid();
+                    eraseGrid();
+                    blackGrid();
+                    
+                }
+                else{
+                    origGrid();
+                    rainbowGrid();
+                    eraseGrid();
+                    blackGrid();
+                }
+            })
+
+            
+        }
+
+        //Generate random color
+        function rainbowGrid(){
+            const cube = document.querySelectorAll(".cube");
+
+            rainbow.addEventListener("click", ()=>{
+                
+                cube.forEach(cube =>{
+                    
+                    
+                    
+                    cube.addEventListener("mouseenter", () => {
+
+                        var re = Math.floor(Math.random() * 255 + 1);
+                        var gr = Math.floor(Math.random() * 255 + 1);
+                        var bl = Math.floor(Math.random() * 255 + 1);
+
+                        cube.style.backgroundColor = "rgb("+ re + ", "+ gr +", " + bl +")";
+                       
+                    })
+                })
+            })
+            
+        }
+
+        function blackGrid(){
+            const blackG = document.querySelector(".default");
+
+            blackG.addEventListener("click", () =>{
+                gridHoover();
+            })
+        }
+
+        
+        origGrid();
+        newGrid();
+        rainbowGrid();
+        eraseGrid();
+        blackGrid();
+
+        
+
+    </script>
+</html> 
